@@ -1,0 +1,97 @@
+from tkinter import *
+from tkinter.ttk import Combobox
+import random
+
+ventana = Tk()
+ventana.title("Prueba")
+champs = ['Nyx', 'Slash', 'Anarky', 'Athena', 'Ranger', 'Visor', 'Galena', 'B.J.','Strogg', 'Eisen', 'Death Knight', 'Doom Slayer', 'Scalebarear', 'Solrag','Keel', 'Cluch']
+maps = ['Awaken', 'Deep Embrace', 'Insomnia', 'Crucible', 'Molten Falls','Vale of Pnath', 'Ruins Of Sarnath', 'Blood Covenant', 'Blood Run','Exile', 'Corrupted Keep']
+partidas = []
+
+def click_boton():
+    text_box.insert(0, "/"+texto_escenario.get())
+    text_box.insert(0, "/"+texto_personaje2.get())
+    text_box.insert(0, "/"+texto_nombre2.get())
+    text_box.insert(0, ":"+texto_resultado2.get())
+    text_box.insert(0, "/"+texto_resultado1.get())
+    text_box.insert(0, "/"+texto_personaje1.get())
+    text_box.insert(0, texto_nombre1.get())
+    
+    with open("resultadosQC.txt", "a") as archivo:
+            archivo.write(text_box.get() + "\n")
+            text_box.delete(0,END)
+
+def aleatorio():
+    # Seleccionar campeones y mapa aleatoriamente
+    campeon1, campeon2 = random.sample(champs, 2)
+    mapa = random.choice(maps)
+    # Eliminar campeones y mapa seleccionados de la lista de opciones
+    champs.remove(campeon1)
+    champs.remove(campeon2)
+    maps.remove(mapa)
+    texto_personaje1=campeon1
+    texto_personaje2=campeon2
+    texto_escenario=mapa
+
+def restablecer_pool():
+    champs = ['Nyx', 'Slash', 'Anarky', 'Athena', 'Ranger', 'Visor', 'Galena', 'B.J.','Strogg', 'Eisen', 'Death Knight', 'Doom Slayer', 'Scalebarear', 'Solrag','Keel', 'Cluch']
+    maps = ['Awaken', 'Deep Embrace', 'Insomnia', 'Crucible', 'Molten Falls','Vale of Pnath', 'Ruins Of Sarnath', 'Blood Covenant', 'Blood Run','Exile', 'Corrupted Keep']
+    return champs, maps   
+    
+def reset():
+    text_box.delete(0, END)
+
+#plyr_1
+nombre1 = Label(ventana, text="Nick jugador 1:")
+nombre1.grid(row=0, column=0, columnspan=4, padx=10, pady=10)
+texto_nombre1 = Entry(ventana)
+texto_nombre1.grid(row=1, columnspan=4, padx=10, pady=10)
+
+#plyr_2
+nombre2 = Label(ventana, text="Nick jugador 2:")
+nombre2.grid(row=0, column=5, columnspan=4, padx=10, pady=10)
+texto_nombre2 = Entry(ventana)
+texto_nombre2.grid(row=1,column=5, columnspan=4, padx=10, pady=10)
+
+#pj_1
+personaje1 = Label(ventana, text="campeon:")
+personaje1.grid(row=2, column=0, columnspan=4, padx=10, pady=10)
+texto_personaje1 = Combobox(values=champs)
+texto_personaje1.grid(row=3, column=0, columnspan=4, padx=10, pady=10)
+
+#pj_2
+personaje2 = Label(ventana, text="Campeon:")
+personaje2.grid(row=2, column=5, columnspan=4, padx=10, pady=10)
+texto_personaje2 = Combobox(values=champs)
+texto_personaje2.grid(row=3, column=5, columnspan=4, padx=10, pady=10)
+
+#mapa
+escenario = Label(ventana, text="Mapa:")
+escenario.grid(row=4, column=2, columnspan=4, padx=10, pady=10)
+texto_escenario = Combobox(values=maps)
+texto_escenario.grid(row=5, column=2, columnspan=4, padx=10, pady=10)
+
+#resultado
+resultado = Label(ventana, text="resultado de la partida:")
+resultado.grid(row=6, column=2, columnspan=4, padx=10, pady=10)
+texto_resultado1 = Entry(ventana)
+texto_resultado1.grid(row=7,column=1, columnspan=2, padx=10, pady=10)
+resultado1 = Label(ventana, text=":")
+resultado1.grid(row=7, column=4, columnspan=1, padx=10, pady=10)
+texto_resultado2 = Entry(ventana)
+texto_resultado2.grid(row=7,column=5, columnspan=2, padx=10, pady=10)
+
+#botons
+aceptar = Button(ventana, text="Random", command=lambda: aleatorio())
+aceptar.grid(row=8,column=0,columnspan=2, padx=10, pady=10)
+
+guardar = Button(ventana, text="Guardar", command=lambda: click_boton())
+guardar.grid(row=8,column=3,columnspan=2, padx=10, pady=10)
+
+reset1 = Button(ventana, text="Reset", command=lambda: reset())
+reset1.grid(row=8,column=6,columnspan=2, padx=10, pady=10)
+
+text_box = Entry(ventana)
+text_box.grid(row=9, columnspan=4, pady=20)
+
+ventana.mainloop()
